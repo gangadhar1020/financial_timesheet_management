@@ -1,0 +1,32 @@
+[
+  {
+    "id": "ORG-001",
+    "name": "Apex Global Solutions Inc.",
+    "code": "APEX",
+    "taxId": "XX-XXX4912",
+    "currency": "USD",
+    "fiscalYearStart": "January",
+    "address": "100 Montgomery St, Suite 1800, San Francisco, CA 94104",
+    "contactEmail": "finance@apexsolutions.io",
+    "contactPhone": "+1 (415) 890-2100",
+    "status": "Active",
+    "version": 1,
+    "createdAt": "2024-01-15T08:00:00Z",
+    "updatedAt": "2026-01-10T14:30:00Z"
+  },
+  {
+    "id": "ORG-002",
+    "name": "Nexus Talent & Cloud Partners",
+    "code": "NEXUS",
+    "taxId": "XX-XXX8821",
+    "currency": "USD",
+    "fiscalYearStart": "July",
+    "address": "400 Galleria Pkwy SE, Suite 1200, Atlanta, GA 30339",
+    "contactEmail": "billing@nexustalent.com",
+    "contactPhone": "+1 (404) 555-7820",
+    "status": "Active",
+    "version": 1,
+    "createdAt": "2024-06-01T09:00:00Z",
+    "updatedAt": "2025-11-20T11:15:00Z"
+  }
+]

@@ -1,0 +1,53 @@
+[
+  {
+    "id": "CON-2001",
+    "organizationId": "ORG-001",
+    "companyName": "Kinetics Software LLC",
+    "contactPerson": "Rajesh Sharma",
+    "email": "rajesh@kineticssoftware.com",
+    "phone": "+1 (650) 412-9930",
+    "specialty": "Data Engineering & Spark Pipelines",
+    "contractType": "Corp-to-Corp (C2C)",
+    "hourlyRate": 95.00,
+    "taxId": "XX-XXX3319",
+    "paymentTerms": "Net 30",
+    "status": "Active",
+    "version": 2,
+    "createdAt": "2024-08-12T14:00:00Z",
+    "updatedAt": "2026-04-10T11:20:00Z"
+  },
+  {
+    "id": "CON-2002",
+    "organizationId": "ORG-001",
+    "companyName": "Aura CyberSec Consulting",
+    "contactPerson": "Chloe Dubois",
+    "email": "chloe@aurasec.io",
+    "phone": "+1 (408) 723-5511",
+    "specialty": "Penetration Testing & SOC 2 Audits",
+    "contractType": "1099 Independent",
+    "hourlyRate": 115.00,
+    "taxId": "XX-XXX7182",
+    "paymentTerms": "Net 15",
+    "status": "Active",
+    "version": 1,
+    "createdAt": "2025-03-01T09:00:00Z",
+    "updatedAt": "2026-02-14T13:40:00Z"
+  },
+  {
+    "id": "CON-2003",
+    "organizationId": "ORG-001",
+    "companyName": "Vortex UX Studios",
+    "contactPerson": "Liam O'Connor",
+    "email": "liam@vortexux.co",
+    "phone": "+1 (212) 670-8844",
+    "specialty": "Design Systems & Product Prototyping",
+    "contractType": "1099 Independent",
+    "hourlyRate": 85.00,
+    "taxId": "XX-XXX9920",
+    "paymentTerms": "Net 30",
+    "status": "Completed",
+    "version": 2,
+    "createdAt": "2024-11-15T10:30:00Z",
+    "updatedAt": "2026-06-30T17:00:00Z"
+  }
+]

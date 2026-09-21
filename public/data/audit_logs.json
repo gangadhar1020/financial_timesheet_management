@@ -1,0 +1,47 @@
+[
+  {
+    "id": "AUD-1401",
+    "organizationId": "ORG-001",
+    "entityType": "Timesheet",
+    "entityId": "TS-6001",
+    "action": "APPROVE",
+    "actor": "David K. Campbell (Client Manager)",
+    "ipAddress": "198.51.100.44",
+    "details": "Approved 40.0 regular hours for Sarah Jenkins - Period ending 2026-09-13",
+    "timestamp": "2026-09-15T11:30:00Z",
+    "status": "Success",
+    "version": 1,
+    "createdAt": "2026-09-15T11:30:00Z",
+    "updatedAt": "2026-09-15T11:30:00Z"
+  },
+  {
+    "id": "AUD-1402",
+    "organizationId": "ORG-001",
+    "entityType": "Invoice",
+    "entityId": "INV-8001",
+    "action": "PAYMENT_RECORDED",
+    "actor": "Alex Morgan (Finance Admin)",
+    "ipAddress": "203.0.113.19",
+    "details": "Recorded wire receipt ACH-WIRE-88912 of $28,400.00 from FinTech Horizon Corp",
+    "timestamp": "2026-09-18T16:00:00Z",
+    "status": "Success",
+    "version": 1,
+    "createdAt": "2026-09-18T16:00:00Z",
+    "updatedAt": "2026-09-18T16:00:00Z"
+  },
+  {
+    "id": "AUD-1403",
+    "organizationId": "ORG-001",
+    "entityType": "Placement",
+    "entityId": "PLC-5003",
+    "action": "RATE_MODIFICATION",
+    "actor": "Elena Rostova (Staffing Lead)",
+    "ipAddress": "198.51.100.12",
+    "details": "Updated bill rate from $185.00 to $190.00 following contract amendment",
+    "timestamp": "2026-09-04T10:15:00Z",
+    "status": "Success",
+    "version": 2,
+    "createdAt": "2026-09-04T10:15:00Z",
+    "updatedAt": "2026-09-04T10:15:00Z"
+  }
+]

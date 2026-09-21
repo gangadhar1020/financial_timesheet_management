@@ -1,0 +1,38 @@
+[
+  {
+    "id": "1",
+    "name": "Project Alpha",
+    "description": "Migration of legacy systems to the cloud infrastructure.",
+    "status": "In Progress",
+    "progress": 65,
+    "team": ["Alice", "Bob", "Charlie"],
+    "dueDate": "2026-12-01"
+  },
+  {
+    "id": "2",
+    "name": "Project Beta",
+    "description": "Development of the new customer-facing mobile application.",
+    "status": "Completed",
+    "progress": 100,
+    "team": ["Dave", "Eve"],
+    "dueDate": "2026-08-15"
+  },
+  {
+    "id": "3",
+    "name": "Project Gamma",
+    "description": "Security audit and compliance upgrades.",
+    "status": "Not Started",
+    "progress": 0,
+    "team": ["Frank"],
+    "dueDate": "2027-01-20"
+  },
+  {
+    "id": "4",
+    "name": "Project Delta",
+    "description": "Machine learning model for predictive maintenance.",
+    "status": "In Progress",
+    "progress": 30,
+    "team": ["Grace", "Heidi", "Ivan"],
+    "dueDate": "2027-03-10"
+  }
+]

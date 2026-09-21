@@ -1,0 +1,36 @@
+[
+  {
+    "id": "APB-1001",
+    "organizationId": "ORG-001",
+    "contractorId": "CON-2001",
+    "vendorName": "Kinetics Software LLC",
+    "billNumber": "BILL-KS-9021",
+    "billDate": "2026-09-01",
+    "dueDate": "2026-10-01",
+    "totalAmount": 15200.00,
+    "paidAmount": 15200.00,
+    "balanceDue": 0.00,
+    "description": "August 2026 Big Data consulting (Rajesh Sharma)",
+    "status": "Paid",
+    "version": 2,
+    "createdAt": "2026-09-01T10:00:00Z",
+    "updatedAt": "2026-09-17T12:00:00Z"
+  },
+  {
+    "id": "APB-1002",
+    "organizationId": "ORG-001",
+    "contractorId": "CON-2002",
+    "vendorName": "Aura CyberSec Consulting",
+    "billNumber": "INV-AURA-4402",
+    "billDate": "2026-09-05",
+    "dueDate": "2026-09-20",
+    "totalAmount": 9200.00,
+    "paidAmount": 0.00,
+    "balanceDue": 9200.00,
+    "description": "SOC 2 and Penetration test services (Chloe Dubois)",
+    "status": "Approved",
+    "version": 1,
+    "createdAt": "2026-09-05T14:30:00Z",
+    "updatedAt": "2026-09-10T11:00:00Z"
+  }
+]
