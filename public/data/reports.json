@@ -1,0 +1,56 @@
+[
+  {
+    "id": "REP-1301",
+    "organizationId": "ORG-001",
+    "title": "Gross Margin & Placement Profitability Report",
+    "category": "Financial Analytics",
+    "description": "Analyzes bill vs pay rates, consultant margins, and contribution per client account.",
+    "frequency": "Monthly",
+    "lastGenerated": "2026-09-01T08:00:00Z",
+    "metrics": {
+      "avgMargin": "40.03%",
+      "highestMarginClient": "FinTech Horizon Corp (43.9%)",
+      "totalGrossProfit": "$28,390"
+    },
+    "status": "Ready",
+    "version": 1,
+    "createdAt": "2024-01-15T00:00:00Z",
+    "updatedAt": "2026-09-01T08:00:00Z"
+  },
+  {
+    "id": "REP-1302",
+    "organizationId": "ORG-001",
+    "title": "Aged Accounts Receivable & DSO Analysis",
+    "category": "Treasury & AR",
+    "description": "Breakdown of outstanding invoices by 0-30, 31-60, 61-90, and 90+ days aging buckets.",
+    "frequency": "Weekly",
+    "lastGenerated": "2026-09-18T18:00:00Z",
+    "metrics": {
+      "currentDSO": "34 Days",
+      "totalOutstanding": "$48,250",
+      "overduePercent": "44.0%"
+    },
+    "status": "Ready",
+    "version": 1,
+    "createdAt": "2024-01-15T00:00:00Z",
+    "updatedAt": "2026-09-18T18:00:00Z"
+  },
+  {
+    "id": "REP-1303",
+    "organizationId": "ORG-001",
+    "title": "Consultant Utilization & Missing Timesheets",
+    "category": "Operational BI",
+    "description": "Highlights active placements without submitted timesheets for active payroll cycle.",
+    "frequency": "Daily",
+    "lastGenerated": "2026-09-19T06:00:00Z",
+    "metrics": {
+      "activePlacements": 3,
+      "pendingSubmissions": 1,
+      "utilizationRate": "96.4%"
+    },
+    "status": "Ready",
+    "version": 1,
+    "createdAt": "2024-01-15T00:00:00Z",
+    "updatedAt": "2026-09-19T06:00:00Z"
+  }
+]

@@ -1,0 +1,24 @@
+{
+  "systemName": "Project Monitor Enterprise Operations",
+  "version": "2.4.0",
+  "activeOrganizationId": "ORG-001",
+  "currency": {
+    "code": "USD",
+    "symbol": "$",
+    "locale": "en-US"
+  },
+  "fiscalCalendar": {
+    "startMonth": "January",
+    "weekStart": "Monday"
+  },
+  "defaultPaymentTerms": "Net 30",
+  "supportedFrequencies": ["Weekly", "Bi-Weekly", "Semi-Monthly", "Monthly"],
+  "features": {
+    "timesheetApprovalWorkflow": true,
+    "multiTenantEnabled": true,
+    "csvBatchIngestion": true,
+    "auditTrailImmutable": true
+  },
+  "status": "Active",
+  "updatedAt": "2026-09-19T08:00:00Z"
+}

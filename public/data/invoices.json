@@ -1,0 +1,53 @@
+[
+  {
+    "id": "INV-8001",
+    "organizationId": "ORG-001",
+    "clientId": "CLI-3001",
+    "clientName": "FinTech Horizon Corp",
+    "invoiceNumber": "INV-2026-0811",
+    "issueDate": "2026-08-31",
+    "dueDate": "2026-09-30",
+    "totalAmount": 28400.00,
+    "paidAmount": 28400.00,
+    "balanceDue": 0.00,
+    "agingBucket": "Current",
+    "status": "Paid",
+    "version": 2,
+    "createdAt": "2026-08-31T14:00:00Z",
+    "updatedAt": "2026-09-18T16:00:00Z"
+  },
+  {
+    "id": "INV-8002",
+    "organizationId": "ORG-001",
+    "clientId": "CLI-3002",
+    "clientName": "BioHealth Discovery Inc.",
+    "invoiceNumber": "INV-2026-0812",
+    "issueDate": "2026-08-31",
+    "dueDate": "2026-10-15",
+    "totalAmount": 27000.00,
+    "paidAmount": 0.00,
+    "balanceDue": 27000.00,
+    "agingBucket": "Current",
+    "status": "Issued",
+    "version": 1,
+    "createdAt": "2026-08-31T15:00:00Z",
+    "updatedAt": "2026-08-31T15:00:00Z"
+  },
+  {
+    "id": "INV-8003",
+    "organizationId": "ORG-001",
+    "clientId": "CLI-3001",
+    "clientName": "FinTech Horizon Corp",
+    "invoiceNumber": "INV-2026-0709",
+    "issueDate": "2026-07-31",
+    "dueDate": "2026-08-30",
+    "totalAmount": 21250.00,
+    "paidAmount": 0.00,
+    "balanceDue": 21250.00,
+    "agingBucket": "1-30 Days",
+    "status": "Overdue",
+    "version": 1,
+    "createdAt": "2026-07-31T16:00:00Z",
+    "updatedAt": "2026-08-31T09:00:00Z"
+  }
+]

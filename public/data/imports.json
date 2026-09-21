@@ -1,0 +1,138 @@
+[
+  {
+    "id": "IMP-1201",
+    "organizationId": "ORG-001",
+    "batchName": "Q3-2026-Employee-Roster-Sync.csv",
+    "originalFileName": "Q3-2026-Employee-Roster-Sync.csv",
+    "importType": "Employees",
+    "module": "Employees",
+    "recordsRead": 24,
+    "recordsProcessed": 24,
+    "recordsSucceeded": 24,
+    "recordsFailed": 0,
+    "importedBy": "Admin (Alex Morgan)",
+    "fileSizeBytes": 14200,
+    "pipeline": {
+      "incoming": "2026-09-01T09:30:00Z",
+      "parsed": "2026-09-01T09:30:05Z",
+      "validated": "2026-09-01T09:30:08Z",
+      "processed": "2026-09-01T09:31:12Z",
+      "rejected": null
+    },
+    "rejectionReasons": [],
+    "archiveRef": "ARCH-2026-09-01-001",
+    "parsedRecords": [
+      { "row": 1, "id": "EMP-9001", "firstName": "Aisha", "lastName": "Patel", "email": "a.patel@example.com", "status": "Valid" },
+      { "row": 2, "id": "EMP-9002", "firstName": "Jonas", "lastName": "Klein", "email": "j.klein@example.com", "status": "Valid" },
+      { "row": 3, "id": "EMP-9003", "firstName": "Mei", "lastName": "Wong", "email": "m.wong@example.com", "status": "Valid" }
+    ],
+    "status": "Completed",
+    "version": 1,
+    "createdAt": "2026-09-01T09:30:00Z",
+    "updatedAt": "2026-09-01T09:31:12Z"
+  },
+  {
+    "id": "IMP-1202",
+    "organizationId": "ORG-001",
+    "batchName": "Biotech-Timesheets-W36.csv",
+    "originalFileName": "Biotech-Timesheets-W36.xlsx",
+    "importType": "Timesheets",
+    "module": "Timesheets",
+    "recordsRead": 18,
+    "recordsProcessed": 18,
+    "recordsSucceeded": 17,
+    "recordsFailed": 1,
+    "importedBy": "Staffing Specialist (Elena Rostova)",
+    "fileSizeBytes": 28900,
+    "pipeline": {
+      "incoming": "2026-09-14T14:00:00Z",
+      "parsed": "2026-09-14T14:00:12Z",
+      "validated": "2026-09-14T14:00:35Z",
+      "processed": "2026-09-14T14:02:15Z",
+      "rejected": null
+    },
+    "rejectionReasons": [
+      { "row": 14, "field": "placementId", "message": "Placement PLC-9999 not found in active placements." }
+    ],
+    "archiveRef": "ARCH-2026-09-14-002",
+    "parsedRecords": [
+      { "row": 1, "placementId": "PLC-5001", "periodEnding": "2026-09-06", "totalHours": 40, "status": "Valid" },
+      { "row": 2, "placementId": "PLC-5002", "periodEnding": "2026-09-06", "totalHours": 45, "status": "Valid" },
+      { "row": 14, "placementId": "PLC-9999", "periodEnding": "2026-09-06", "totalHours": 35, "status": "Error" }
+    ],
+    "status": "Completed with Warnings",
+    "version": 1,
+    "createdAt": "2026-09-14T14:00:00Z",
+    "updatedAt": "2026-09-14T14:02:15Z"
+  },
+  {
+    "id": "IMP-1203",
+    "organizationId": "ORG-001",
+    "batchName": "Placement-Batch-October-2026.csv",
+    "originalFileName": "Placement-Batch-October-2026.csv",
+    "importType": "Placements",
+    "module": "Placements",
+    "recordsRead": 5,
+    "recordsProcessed": 0,
+    "recordsSucceeded": 0,
+    "recordsFailed": 5,
+    "importedBy": "Admin (Alex Morgan)",
+    "fileSizeBytes": 3400,
+    "pipeline": {
+      "incoming": "2026-09-16T10:00:00Z",
+      "parsed": "2026-09-16T10:00:04Z",
+      "validated": "2026-09-16T10:00:10Z",
+      "processed": null,
+      "rejected": "2026-09-16T10:01:00Z"
+    },
+    "rejectionReasons": [
+      { "row": 1, "field": "clientId", "message": "Client CLI-8888 not found." },
+      { "row": 2, "field": "startDate", "message": "End date 2026-01-01 precedes start date 2026-06-01." },
+      { "row": 3, "field": "billRate", "message": "Bill rate must be a positive number." },
+      { "row": 4, "field": "candidateId", "message": "Employee EMP-0000 not found." },
+      { "row": 5, "field": "jobId", "message": "Job JOB-7777 not found in active jobs." }
+    ],
+    "archiveRef": "ARCH-2026-09-16-003",
+    "parsedRecords": [
+      { "row": 1, "clientId": "CLI-8888", "candidateId": "EMP-1001", "billRate": 120, "status": "Error" },
+      { "row": 2, "clientId": "CLI-3001", "candidateId": "EMP-1002", "startDate": "2026-06-01", "endDate": "2026-01-01", "status": "Error" },
+      { "row": 3, "clientId": "CLI-3002", "candidateId": "CON-2001", "billRate": -50, "status": "Error" }
+    ],
+    "status": "Rejected",
+    "version": 1,
+    "createdAt": "2026-09-16T10:00:00Z",
+    "updatedAt": "2026-09-16T10:01:00Z"
+  },
+  {
+    "id": "IMP-1204",
+    "organizationId": "ORG-001",
+    "batchName": "Weekly-Timesheet-Import-W37.csv",
+    "originalFileName": "Weekly-Timesheet-Import-W37.csv",
+    "importType": "Timesheets",
+    "module": "Timesheets",
+    "recordsRead": 6,
+    "recordsProcessed": 6,
+    "recordsSucceeded": 6,
+    "recordsFailed": 0,
+    "importedBy": "Admin (Alex Morgan)",
+    "fileSizeBytes": 5100,
+    "pipeline": {
+      "incoming": "2026-09-18T08:00:00Z",
+      "parsed": "2026-09-18T08:00:03Z",
+      "validated": "2026-09-18T08:00:08Z",
+      "processed": "2026-09-18T08:00:45Z",
+      "rejected": null
+    },
+    "rejectionReasons": [],
+    "archiveRef": "ARCH-2026-09-18-004",
+    "parsedRecords": [
+      { "row": 1, "placementId": "PLC-5001", "periodEnding": "2026-09-13", "totalHours": 40, "status": "Valid" },
+      { "row": 2, "placementId": "PLC-5002", "periodEnding": "2026-09-13", "totalHours": 42, "status": "Valid" },
+      { "row": 3, "placementId": "PLC-5003", "periodEnding": "2026-09-13", "totalHours": 38, "status": "Valid" }
+    ],
+    "status": "Completed",
+    "version": 1,
+    "createdAt": "2026-09-18T08:00:00Z",
+    "updatedAt": "2026-09-18T08:00:45Z"
+  }
+]

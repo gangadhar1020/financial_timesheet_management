@@ -1,0 +1,36 @@
+[
+  {
+    "id": "ARP-9001",
+    "organizationId": "ORG-001",
+    "clientId": "CLI-3001",
+    "clientName": "FinTech Horizon Corp",
+    "invoiceId": "INV-8001",
+    "paymentReference": "ACH-WIRE-88912",
+    "paymentMethod": "Wire Transfer",
+    "paymentDate": "2026-09-18",
+    "amount": 28400.00,
+    "currency": "USD",
+    "notes": "Full settlement of August billing INV-2026-0811",
+    "status": "Processed",
+    "version": 1,
+    "createdAt": "2026-09-18T15:30:00Z",
+    "updatedAt": "2026-09-18T16:00:00Z"
+  },
+  {
+    "id": "ARP-9002",
+    "organizationId": "ORG-001",
+    "clientId": "CLI-3003",
+    "clientName": "Metro Transit Digital Authority",
+    "invoiceId": null,
+    "paymentReference": "EFT-PUB-44019",
+    "paymentMethod": "EFT / Direct Deposit",
+    "paymentDate": "2026-08-20",
+    "amount": 18500.00,
+    "currency": "USD",
+    "notes": "Milestone delivery prepayment",
+    "status": "Processed",
+    "version": 1,
+    "createdAt": "2026-08-20T11:00:00Z",
+    "updatedAt": "2026-08-20T11:00:00Z"
+  }
+]

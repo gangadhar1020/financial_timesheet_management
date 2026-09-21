@@ -1,0 +1,50 @@
+[
+  {
+    "id": "VEN-3001",
+    "organizationId": "ORG-001",
+    "name": "Kinetics Talent Solutions LLC",
+    "vendorType": "Corp-to-Corp Staffing Partner",
+    "contactPerson": "Rajesh Sharma",
+    "email": "partners@kineticssoftware.com",
+    "phone": "+1 (650) 412-9930",
+    "taxId": "XX-XXX3319",
+    "paymentTerms": "Net 30",
+    "status": "Active",
+    "rating": "Tier 1 Preferred",
+    "version": 2,
+    "createdAt": "2024-08-12T14:00:00Z",
+    "updatedAt": "2026-04-10T11:20:00Z"
+  },
+  {
+    "id": "VEN-3002",
+    "organizationId": "ORG-001",
+    "name": "Aura CyberSec Partners",
+    "vendorType": "Specialized Security Agency",
+    "contactPerson": "Chloe Dubois",
+    "email": "procurement@aurasec.io",
+    "phone": "+1 (408) 723-5511",
+    "taxId": "XX-XXX7182",
+    "paymentTerms": "Net 15",
+    "status": "Active",
+    "rating": "Tier 1 Preferred",
+    "version": 1,
+    "createdAt": "2025-03-01T09:00:00Z",
+    "updatedAt": "2026-02-14T13:40:00Z"
+  },
+  {
+    "id": "VEN-3003",
+    "organizationId": "ORG-001",
+    "name": "Vortex Design Labs",
+    "vendorType": "Subcontractor Studio",
+    "contactPerson": "Liam O'Connor",
+    "email": "billing@vortexux.co",
+    "phone": "+1 (212) 670-8844",
+    "taxId": "XX-XXX9920",
+    "paymentTerms": "Net 30",
+    "status": "Inactive",
+    "rating": "Standard",
+    "version": 2,
+    "createdAt": "2024-11-15T10:30:00Z",
+    "updatedAt": "2026-06-30T17:00:00Z"
+  }
+]

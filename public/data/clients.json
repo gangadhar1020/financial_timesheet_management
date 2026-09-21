@@ -1,0 +1,53 @@
+[
+  {
+    "id": "CLI-3001",
+    "organizationId": "ORG-001",
+    "name": "FinTech Horizon Corp",
+    "industry": "Financial Technology & Banking",
+    "contactName": "David K. Campbell",
+    "contactEmail": "ap-vendor@fintechhorizon.com",
+    "phone": "+1 (212) 555-0199",
+    "billingAddress": "350 Park Avenue, 24th Floor, New York, NY 10022",
+    "paymentTerms": "Net 30",
+    "creditLimit": 250000.00,
+    "outstandingBalance": 48250.00,
+    "status": "Active",
+    "version": 3,
+    "createdAt": "2024-01-20T08:00:00Z",
+    "updatedAt": "2026-08-01T15:10:00Z"
+  },
+  {
+    "id": "CLI-3002",
+    "organizationId": "ORG-001",
+    "name": "BioHealth Discovery Inc.",
+    "industry": "Healthcare & Biotech",
+    "contactName": "Dr. Miriam Patel",
+    "contactEmail": "procurement@biohealthdiscovery.org",
+    "phone": "+1 (617) 890-4400",
+    "billingAddress": "100 Binney St, Cambridge, MA 02142",
+    "paymentTerms": "Net 45",
+    "creditLimit": 400000.00,
+    "outstandingBalance": 86400.00,
+    "status": "Active",
+    "version": 2,
+    "createdAt": "2024-04-10T11:00:00Z",
+    "updatedAt": "2026-07-15T09:30:00Z"
+  },
+  {
+    "id": "CLI-3003",
+    "organizationId": "ORG-001",
+    "name": "Metro Transit Digital Authority",
+    "industry": "Public Sector & Transportation",
+    "contactName": "Arthur Pendelton",
+    "contactEmail": "contracts@metrotransittech.gov",
+    "phone": "+1 (312) 777-3200",
+    "billingAddress": "500 W Madison St, Chicago, IL 60661",
+    "paymentTerms": "Net 60",
+    "creditLimit": 150000.00,
+    "outstandingBalance": 0.00,
+    "status": "Active",
+    "version": 1,
+    "createdAt": "2025-02-01T13:00:00Z",
+    "updatedAt": "2026-05-10T14:00:00Z"
+  }
+]
