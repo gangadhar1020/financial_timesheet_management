@@ -7,12 +7,12 @@ import { LoadingState, ErrorState } from './components/common/FeedbackStates';
 // Views
 import { DashboardView } from './views/DashboardView';
 import { EmployeesContractorsView } from './views/EmployeesContractorsView';
-import { ClientsView } from './views/ClientsView';
-import { VendorsView } from './views/VendorsView';
-import { JobsView } from './views/JobsView';
+import { CandidatesView } from './views/CandidatesView';
+import { AssignmentsView } from './views/JobsView';
 import { PlacementsView } from './views/PlacementsView';
 import { TimesheetsView } from './views/TimesheetsView';
 import { IncomeRevenueView } from './views/IncomeRevenueView';
+import { InvoicesView } from './views/InvoicesView';
 import { AccountsReceivableView } from './views/AccountsReceivableView';
 import { AccountsPayableView } from './views/AccountsPayableView';
 import { ImportsView } from './views/ImportsView';
@@ -34,20 +34,24 @@ function App() {
     switch (activeView) {
       case 'dashboard':
         return <DashboardView />;
+      case 'employees':
       case 'employees-contractors':
         return <EmployeesContractorsView />;
+      case 'candidates':
       case 'clients':
-        return <ClientsView />;
       case 'vendors':
-        return <VendorsView />;
+        return <CandidatesView />;
+      case 'assignments':
       case 'jobs':
-        return <JobsView />;
+        return <AssignmentsView />;
       case 'placements':
         return <PlacementsView />;
       case 'timesheets':
         return <TimesheetsView />;
       case 'income':
         return <IncomeRevenueView />;
+      case 'invoices':
+        return <InvoicesView />;
       case 'ar':
         return <AccountsReceivableView />;
       case 'ap':

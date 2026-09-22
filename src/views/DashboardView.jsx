@@ -22,15 +22,34 @@ export const DashboardView = () => {
     timesheets,
     invoices,
     income,
+    apBills = [],
+    arPayments = [],
   } = useSelector((state) => state.data);
 
-  // Compute live aggregates from data foundation
-  const totalRevenue = income.reduce((acc, curr) => acc + (curr.amount || 0), 0);
+  // Compute live aggregates from data foundation (no hardcoded financial values)
+  const totalRevenue = income.reduce((acc, curr) => acc + (curr.amount || curr.totalIncome || 0), 0);
+  const totalWorkerCost = income.reduce((acc, curr) => acc + (curr.costOfGoodsSold || 0), 0);
+  const grossMargin = totalRevenue - totalWorkerCost;
+  const grossMarginPercent = totalRevenue > 0 ? ((grossMargin / totalRevenue) * 100).toFixed(1) : '0.0';
+
   const activePlacementsCount = placements.filter((p) => p.status === 'Active').length;
   const pendingTimesheetsCount = timesheets.filter((t) => t.status === 'Submitted' || t.status === 'Draft').length;
-  const openInvoicesBalance = invoices
-    .filter((inv) => inv.status !== 'Paid')
-    .reduce((acc, curr) => acc + (curr.balanceDue || 0), 0);
+  const approvedTimesheetsCount = timesheets.filter((t) => t.status === 'Approved').length;
+
+  const totalInvoiced = invoices.reduce((acc, curr) => acc + (curr.totalAmount || 0), 0);
+  const totalCollected = (arPayments || []).reduce((acc, curr) => acc + (curr.amount || 0), 0);
+
+  const openInvoices = invoices.filter((inv) => inv.status !== 'Paid' && inv.status !== 'Cancelled');
+  const openInvoicesBalance = openInvoices.reduce((acc, curr) => {
+    const bal = curr.balanceDue !== undefined ? curr.balanceDue : (curr.totalAmount - (curr.paidAmount || 0));
+    return acc + (bal > 0 ? bal : 0);
+  }, 0);
+
+  const openBills = (apBills || []).filter((b) => b.status !== 'Paid' && b.status !== 'Cancelled');
+  const openBillsBalance = openBills.reduce((acc, curr) => {
+    const bal = curr.balanceDue !== undefined ? curr.balanceDue : (curr.totalAmount - (curr.paidAmount || 0));
+    return acc + (bal > 0 ? bal : 0);
+  }, 0);
 
   const handleQuickAction = (viewId, actionName) => {
     dispatch(setActiveView(viewId));
@@ -62,10 +81,10 @@ export const DashboardView = () => {
             </button>
             <button
               type="button"
-              onClick={() => handleQuickAction('ar', 'Accounts Receivable')}
+              onClick={() => handleQuickAction('invoices', 'Client Invoices')}
               className="inline-flex items-center gap-1.5 px-3 py-2 bg-indigo-600 hover:bg-indigo-500 text-white text-xs font-semibold rounded-xl shadow-lg shadow-indigo-600/20 transition-all"
             >
-              <Icon name="ar" className="w-4 h-4" />
+              <Icon name="invoices" className="w-4 h-4" />
               View Invoices
             </button>
           </div>
@@ -75,43 +94,79 @@ export const DashboardView = () => {
       {/* Operational Notice / Phase 1 Alert */}
       <Alert
         type="info"
-        title="Enterprise Application Foundation Initialized"
-        message="Active master data foundation connected with 12 entities. Navigation, responsive shell, and asynchronous data pipelines are fully operational for Phase 2 workflows."
+        title="Staffing Financial & Timesheet Intelligence Operational"
+        message="Active master data foundation connected. Hourly revenue recognition, gross margin tracking, invoice billing, and receivables are synchronized."
       />
 
-      {/* Executive Stat Cards */}
+      {/* Primary Financial Stat Cards */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
         <StatCard
           label="Total Recognized Revenue"
           value={<CurrencyDisplay value={totalRevenue} />}
-          change="+14.2%"
+          change={`${grossMarginPercent}% gross margin`}
           trend="up"
           icon="income"
           accentColor="emerald"
         />
         <StatCard
-          label="Active Placements"
-          value={activePlacementsCount}
-          change="+2 new this month"
-          trend="up"
-          icon="placements"
-          accentColor="indigo"
+          label="Total Worker Cost"
+          value={<CurrencyDisplay value={totalWorkerCost} />}
+          change="Cost of goods sold / payroll"
+          trend="neutral"
+          icon="ap"
+          accentColor="amber"
         />
         <StatCard
-          label="Pending Timesheets"
-          value={pendingTimesheetsCount}
-          change="Requires action"
-          trend="down"
-          icon="timesheets"
-          accentColor="amber"
+          label="Gross Profit Margin"
+          value={<CurrencyDisplay value={grossMargin} />}
+          change={`${grossMarginPercent}% margin efficiency`}
+          trend="up"
+          icon="reports"
+          accentColor="indigo"
         />
         <StatCard
           label="Open AR Receivables"
           value={<CurrencyDisplay value={openInvoicesBalance} />}
-          change="1 overdue invoice"
-          trend="down"
+          change={`${openInvoices.length} open customer invoice(s)`}
+          trend={openInvoicesBalance > 0 ? "neutral" : "up"}
           icon="ar"
           accentColor="purple"
+        />
+      </div>
+
+      {/* Secondary Operations & Settlements Stat Cards */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
+        <StatCard
+          label="Outstanding AP Payables"
+          value={<CurrencyDisplay value={openBillsBalance} />}
+          change={`${openBills.length} pending bill disbursement(s)`}
+          trend="neutral"
+          icon="ap"
+          accentColor="purple"
+        />
+        <StatCard
+          label="Total Customer Invoiced"
+          value={<CurrencyDisplay value={totalInvoiced} />}
+          change={`${invoices.length} total billed invoices`}
+          trend="up"
+          icon="invoices"
+          accentColor="indigo"
+        />
+        <StatCard
+          label="Payments Collected"
+          value={<CurrencyDisplay value={totalCollected} />}
+          change="Settled AR collections"
+          trend="up"
+          icon="income"
+          accentColor="emerald"
+        />
+        <StatCard
+          label="Timesheets & Placements"
+          value={`${approvedTimesheetsCount} Approved`}
+          change={`${pendingTimesheetsCount} pending • ${activePlacementsCount} active placements`}
+          trend="up"
+          icon="timesheets"
+          accentColor="amber"
         />
       </div>
 
@@ -176,8 +231,8 @@ export const DashboardView = () => {
             </h3>
             <div className="space-y-2.5">
               {[
-                { view: 'employees-contractors', title: 'Workforce Roster', desc: 'Manage 4 employees & 3 contractors', icon: 'users' },
-                { view: 'jobs', title: 'Job Requisitions', desc: '4 requisitions (3 active placements)', icon: 'jobs' },
+                { view: 'employees', title: 'Employee Roster', desc: 'Manage 4 internal employees', icon: 'users' },
+                { view: 'assignments', title: 'Assignments', desc: '4 assignments (3 active placements)', icon: 'assignments' },
                 { view: 'imports', title: 'Batch CSV Sync', desc: 'Sync timesheets & external employee records', icon: 'imports' },
                 { view: 'reports', title: 'Financial Reports', desc: 'DSO, Margin Analysis & Utilization BI', icon: 'reports' },
               ].map((item) => (

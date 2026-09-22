@@ -13,9 +13,6 @@ import {
   addEmployee,
   updateEmployee,
   toggleEmployeeStatus,
-  addContractor,
-  updateContractor,
-  toggleContractorStatus,
   addToast,
 } from '../store/dataSlice';
 import {
@@ -26,15 +23,14 @@ import {
 } from '../utils/validation';
 
 /**
- * EmployeesContractorsView Component
+ * EmployeesView Component
  * 
- * @purpose Workforce management module supporting internal W2 employees and 1099/C2C contractors with full CRUD, validation, and deactivation workflows.
+ * @purpose Workforce management module supporting internal W2 employees with full CRUD, validation, and deactivation workflows.
  */
-export const EmployeesContractorsView = () => {
+export const EmployeesView = () => {
   const dispatch = useDispatch();
-  const { employees, contractors, selectedOrgId } = useSelector((state) => state.data);
+  const { employees, selectedOrgId } = useSelector((state) => state.data);
 
-  const [activeTab, setActiveTab] = useState('employees'); // 'employees' | 'contractors'
   const [searchQuery, setSearchQuery] = useState('');
   const [statusFilter, setStatusFilter] = useState('All');
   const [currentPage, setCurrentPage] = useState(1);
@@ -50,28 +46,19 @@ export const EmployeesContractorsView = () => {
   const [formId, setFormId] = useState('');
   const [formFirstName, setFormFirstName] = useState('');
   const [formLastName, setFormLastName] = useState('');
-  const [formCompanyName, setFormCompanyName] = useState('');
-  const [formContactPerson, setFormContactPerson] = useState('');
   const [formEmail, setFormEmail] = useState('');
   const [formPhone, setFormPhone] = useState('');
   const [formRole, setFormRole] = useState('');
   const [formDepartment, setFormDepartment] = useState('Product Engineering');
-  const [formSpecialty, setFormSpecialty] = useState('');
-  const [formContractType, setFormContractType] = useState('1099 Independent');
   const [formEmploymentType, setFormEmploymentType] = useState('Full-Time (W2)');
   const [formRate, setFormRate] = useState('');
   const [formHireDate, setFormHireDate] = useState('');
-  const [formPaymentTerms, setFormPaymentTerms] = useState('Net 30');
   const [formErrors, setFormErrors] = useState({});
 
-  const currentList = activeTab === 'employees' ? employees : contractors;
-
   // Filtering
-  const filteredList = currentList.filter((item) => {
+  const filteredList = employees.filter((item) => {
     const matchesStatus = statusFilter === 'All' || item.status === statusFilter;
-    const searchTarget = activeTab === 'employees'
-      ? `${item.firstName} ${item.lastName} ${item.email} ${item.role} ${item.department} ${item.id}`.toLowerCase()
-      : `${item.companyName} ${item.contactPerson} ${item.email} ${item.specialty} ${item.id}`.toLowerCase();
+    const searchTarget = `${item.firstName} ${item.lastName} ${item.email} ${item.role} ${item.department} ${item.id}`.toLowerCase();
     const matchesSearch = !searchQuery || searchTarget.includes(searchQuery.toLowerCase());
     return matchesStatus && matchesSearch;
   });
@@ -80,23 +67,17 @@ export const EmployeesContractorsView = () => {
 
   // Open Add Modal
   const handleOpenAdd = () => {
-    const count = activeTab === 'employees' ? employees.length : contractors.length;
-    const prefix = activeTab === 'employees' ? 'EMP' : 'CON';
-    setFormId(`${prefix}-${1000 + count + 1}`);
+    const count = employees.length;
+    setFormId(`EMP-${1000 + count + 1}`);
     setFormFirstName('');
     setFormLastName('');
-    setFormCompanyName('');
-    setFormContactPerson('');
     setFormEmail('');
     setFormPhone('');
     setFormRole('');
     setFormDepartment('Product Engineering');
-    setFormSpecialty('');
-    setFormContractType('1099 Independent');
     setFormEmploymentType('Full-Time (W2)');
     setFormRate('75.00');
     setFormHireDate(new Date().toISOString().split('T')[0]);
-    setFormPaymentTerms('Net 30');
     setFormErrors({});
     setShowAddModal(true);
   };
@@ -105,60 +86,42 @@ export const EmployeesContractorsView = () => {
   const handleOpenEdit = (item) => {
     setEditTarget(item);
     setFormId(item.id);
-    if (activeTab === 'employees') {
-      setFormFirstName(item.firstName || '');
-      setFormLastName(item.lastName || '');
-      setFormEmail(item.email || '');
-      setFormPhone(item.phone || '');
-      setFormRole(item.role || '');
-      setFormDepartment(item.department || 'Product Engineering');
-      setFormEmploymentType(item.employmentType || 'Full-Time (W2)');
-      setFormRate(item.payRate ? String(item.payRate) : '');
-      setFormHireDate(item.hireDate || '');
-    } else {
-      setFormCompanyName(item.companyName || '');
-      setFormContactPerson(item.contactPerson || '');
-      setFormEmail(item.email || '');
-      setFormPhone(item.phone || '');
-      setFormSpecialty(item.specialty || '');
-      setFormContractType(item.contractType || '1099 Independent');
-      setFormRate(item.hourlyRate ? String(item.hourlyRate) : '');
-      setFormPaymentTerms(item.paymentTerms || 'Net 30');
-    }
+    setFormFirstName(item.firstName || '');
+    setFormLastName(item.lastName || '');
+    setFormEmail(item.email || '');
+    setFormPhone(item.phone || '');
+    setFormRole(item.role || '');
+    setFormDepartment(item.department || 'Product Engineering');
+    setFormEmploymentType(item.employmentType || 'Full-Time (W2)');
+    setFormRate(item.payRate ? String(item.payRate) : '');
+    setFormHireDate(item.hireDate || '');
     setFormErrors({});
   };
 
   // Validate form
   const validateForm = (isEdit = false) => {
     const errors = {};
-    const existingList = activeTab === 'employees' ? employees : contractors;
 
-    const idErr = validateUniqueId(formId, existingList, isEdit ? editTarget.id : null);
+    const idErr = validateUniqueId(formId, employees, isEdit ? editTarget?.id : null);
     if (idErr) errors.id = idErr;
+
+    const fnErr = validateRequired(formFirstName, 'First Name');
+    if (fnErr) errors.firstName = fnErr;
+
+    const lnErr = validateRequired(formLastName, 'Last Name');
+    if (lnErr) errors.lastName = lnErr;
+
+    const roleErr = validateRequired(formRole, 'Job Title / Role');
+    if (roleErr) errors.role = roleErr;
 
     const emailErr = validateEmail(formEmail);
     if (emailErr) errors.email = emailErr;
 
-    const rateErr = validatePositiveRate(formRate, activeTab === 'employees' ? 'Pay Rate' : 'Hourly Rate');
-    if (rateErr) errors.rate = rateErr;
+    const hireErr = validateRequired(formHireDate, 'Hire Date');
+    if (hireErr) errors.hireDate = hireErr;
 
-    if (activeTab === 'employees') {
-      const fnErr = validateRequired(formFirstName, 'First Name');
-      if (fnErr) errors.firstName = fnErr;
-      const lnErr = validateRequired(formLastName, 'Last Name');
-      if (lnErr) errors.lastName = lnErr;
-      const roleErr = validateRequired(formRole, 'Job Title / Role');
-      if (roleErr) errors.role = roleErr;
-      const hireErr = validateRequired(formHireDate, 'Hire Date');
-      if (hireErr) errors.hireDate = hireErr;
-    } else {
-      const cnErr = validateRequired(formCompanyName, 'Company / Consultant Name');
-      if (cnErr) errors.companyName = cnErr;
-      const cpErr = validateRequired(formContactPerson, 'Contact Person');
-      if (cpErr) errors.contactPerson = cpErr;
-      const specErr = validateRequired(formSpecialty, 'Specialty Area');
-      if (specErr) errors.specialty = specErr;
-    }
+    const rateErr = validatePositiveRate(formRate, 'Pay Rate');
+    if (rateErr) errors.rate = rateErr;
 
     setFormErrors(errors);
     return Object.keys(errors).length === 0;
@@ -167,116 +130,65 @@ export const EmployeesContractorsView = () => {
   const handleSaveAdd = () => {
     if (!validateForm(false)) return;
 
-    if (activeTab === 'employees') {
-      dispatch(
-        addEmployee({
-          id: formId.trim().toUpperCase(),
-          organizationId: selectedOrgId,
-          firstName: formFirstName.trim(),
-          lastName: formLastName.trim(),
-          email: formEmail.trim(),
-          phone: formPhone.trim(),
-          role: formRole.trim(),
-          department: formDepartment,
-          employmentType: formEmploymentType,
-          payRate: parseFloat(formRate),
-          hireDate: formHireDate,
-        })
-      );
-      dispatch(
-        addToast({
-          title: 'Employee Added',
-          message: `${formFirstName} ${formLastName} created with ID ${formId}.`,
-          type: 'success',
-        })
-      );
-    } else {
-      dispatch(
-        addContractor({
-          id: formId.trim().toUpperCase(),
-          organizationId: selectedOrgId,
-          companyName: formCompanyName.trim(),
-          contactPerson: formContactPerson.trim(),
-          email: formEmail.trim(),
-          phone: formPhone.trim(),
-          specialty: formSpecialty.trim(),
-          contractType: formContractType,
-          hourlyRate: parseFloat(formRate),
-          paymentTerms: formPaymentTerms,
-        })
-      );
-      dispatch(
-        addToast({
-          title: 'Contractor Added',
-          message: `${formCompanyName} registered under ID ${formId}.`,
-          type: 'success',
-        })
-      );
-    }
+    dispatch(
+      addEmployee({
+        id: formId.trim().toUpperCase(),
+        organizationId: selectedOrgId,
+        firstName: formFirstName.trim(),
+        lastName: formLastName.trim(),
+        email: formEmail.trim(),
+        phone: formPhone.trim(),
+        role: formRole.trim(),
+        department: formDepartment,
+        employmentType: formEmploymentType,
+        payRate: parseFloat(formRate),
+        hireDate: formHireDate,
+      })
+    );
+    dispatch(
+      addToast({
+        title: 'Employee Added',
+        message: `${formFirstName} ${formLastName} created with ID ${formId}.`,
+        type: 'success',
+      })
+    );
     setShowAddModal(false);
   };
 
   const handleSaveEdit = () => {
     if (!validateForm(true)) return;
 
-    if (activeTab === 'employees') {
-      dispatch(
-        updateEmployee({
-          id: editTarget.id,
-          firstName: formFirstName.trim(),
-          lastName: formLastName.trim(),
-          email: formEmail.trim(),
-          phone: formPhone.trim(),
-          role: formRole.trim(),
-          department: formDepartment,
-          employmentType: formEmploymentType,
-          payRate: parseFloat(formRate),
-          hireDate: formHireDate,
-        })
-      );
-      dispatch(
-        addToast({
-          title: 'Employee Updated',
-          message: `Profile updated for ${formFirstName} ${formLastName}.`,
-          type: 'success',
-        })
-      );
-    } else {
-      dispatch(
-        updateContractor({
-          id: editTarget.id,
-          companyName: formCompanyName.trim(),
-          contactPerson: formContactPerson.trim(),
-          email: formEmail.trim(),
-          phone: formPhone.trim(),
-          specialty: formSpecialty.trim(),
-          contractType: formContractType,
-          hourlyRate: parseFloat(formRate),
-          paymentTerms: formPaymentTerms,
-        })
-      );
-      dispatch(
-        addToast({
-          title: 'Contractor Updated',
-          message: `Record updated for ${formCompanyName}.`,
-          type: 'success',
-        })
-      );
-    }
+    dispatch(
+      updateEmployee({
+        id: editTarget.id,
+        firstName: formFirstName.trim(),
+        lastName: formLastName.trim(),
+        email: formEmail.trim(),
+        phone: formPhone.trim(),
+        role: formRole.trim(),
+        department: formDepartment,
+        employmentType: formEmploymentType,
+        payRate: parseFloat(formRate),
+        hireDate: formHireDate,
+      })
+    );
+    dispatch(
+      addToast({
+        title: 'Employee Updated',
+        message: `Profile updated for ${formFirstName} ${formLastName}.`,
+        type: 'success',
+      })
+    );
     setEditTarget(null);
   };
 
   const handleConfirmToggleStatus = () => {
     if (!statusTarget) return;
 
-    if (activeTab === 'employees') {
-      dispatch(toggleEmployeeStatus(statusTarget.id));
-    } else {
-      dispatch(toggleContractorStatus(statusTarget.id));
-    }
+    dispatch(toggleEmployeeStatus(statusTarget.id));
 
     const newStatus = statusTarget.status === 'Active' ? 'Inactive' : 'Active';
-    const name = statusTarget.companyName || `${statusTarget.firstName} ${statusTarget.lastName}`;
+    const name = `${statusTarget.firstName} ${statusTarget.lastName}`;
     dispatch(
       addToast({
         title: `Status Changed: ${newStatus}`,
@@ -371,86 +283,12 @@ export const EmployeesContractorsView = () => {
     },
   ];
 
-  const contractorColumns = [
-    { header: 'ID', accessor: 'id', sortable: true },
-    {
-      header: 'Company / Firm',
-      sortable: true,
-      render: (row) => (
-        <div>
-          <span className="font-semibold text-white block">{row.companyName}</span>
-          <span className="text-[11px] text-slate-400">{row.contactPerson} ({row.email})</span>
-        </div>
-      ),
-    },
-    { header: 'Specialty', accessor: 'specialty', sortable: true },
-    { header: 'Contract Type', accessor: 'contractType', sortable: true },
-    {
-      header: 'Hourly Rate',
-      accessor: 'hourlyRate',
-      sortable: true,
-      render: (row) => <CurrencyDisplay value={row.hourlyRate} />,
-    },
-    { header: 'Terms', accessor: 'paymentTerms', sortable: true },
-    {
-      header: 'Status',
-      accessor: 'status',
-      sortable: true,
-      render: (row) => <Badge status={row.status} />,
-    },
-    {
-      header: 'Actions',
-      align: 'center',
-      render: (row) => (
-        <div className="flex items-center justify-center gap-1">
-          <button
-            type="button"
-            onClick={(e) => {
-              e.stopPropagation();
-              setInspectItem(row);
-            }}
-            className="p-1 rounded-lg text-slate-400 hover:text-white hover:bg-slate-800 transition-colors"
-            title="Inspect"
-          >
-            <Icon name="eye" className="w-4 h-4" />
-          </button>
-          <button
-            type="button"
-            onClick={(e) => {
-              e.stopPropagation();
-              handleOpenEdit(row);
-            }}
-            className="p-1 rounded-lg text-slate-400 hover:text-indigo-400 hover:bg-slate-800 transition-colors text-xs font-semibold px-1"
-            title="Edit"
-          >
-            Edit
-          </button>
-          <button
-            type="button"
-            onClick={(e) => {
-              e.stopPropagation();
-              setStatusTarget(row);
-            }}
-            className={`p-1 rounded-lg text-xs font-semibold transition-colors ${
-              row.status === 'Active'
-                ? 'text-amber-400 hover:bg-amber-500/10'
-                : 'text-emerald-400 hover:bg-emerald-500/10'
-            }`}
-            title={row.status === 'Active' ? 'Deactivate' : 'Activate'}
-          >
-            {row.status === 'Active' ? 'Deactivate' : 'Activate'}
-          </button>
-        </div>
-      ),
-    },
-  ];
-
   return (
     <div className="space-y-6">
       <PageHeader
-        title="Workforce Management"
-        subtitle="Maintain master profiles, compensation benchmarks, and compliance records for internal W2 staff and 1099/C2C consultants."
-        badge={`${filteredList.length} Total ${activeTab === 'employees' ? 'Employees' : 'Contractors'}`}
+        title="Employees"
+        subtitle="Maintain master profiles, compensation benchmarks, and compliance records for internal W2 staff."
+        badge={`${filteredList.length} Total Employees`}
         actions={
           <button
             type="button"
@@ -458,42 +296,10 @@ export const EmployeesContractorsView = () => {
             className="inline-flex items-center gap-1.5 px-3.5 py-2 bg-indigo-600 hover:bg-indigo-500 text-white text-xs font-semibold rounded-xl shadow-lg shadow-indigo-600/20 transition-all"
           >
             <Icon name="plus" className="w-4 h-4" />
-            Add {activeTab === 'employees' ? 'Employee' : 'Contractor'}
+            Add Employee
           </button>
         }
       />
-
-      {/* Tab Switcher */}
-      <div className="flex items-center gap-2 border-b border-white/5 pb-2">
-        <button
-          type="button"
-          onClick={() => {
-            setActiveTab('employees');
-            setCurrentPage(1);
-          }}
-          className={`px-4 py-2 text-xs font-semibold rounded-xl transition-all ${
-            activeTab === 'employees'
-              ? 'bg-indigo-600/20 text-indigo-300 border border-indigo-500/30 shadow-sm'
-              : 'text-slate-400 hover:text-white hover:bg-slate-800/60'
-          }`}
-        >
-          Internal Employees (W2) ({employees.length})
-        </button>
-        <button
-          type="button"
-          onClick={() => {
-            setActiveTab('contractors');
-            setCurrentPage(1);
-          }}
-          className={`px-4 py-2 text-xs font-semibold rounded-xl transition-all ${
-            activeTab === 'contractors'
-              ? 'bg-indigo-600/20 text-indigo-300 border border-indigo-500/30 shadow-sm'
-              : 'text-slate-400 hover:text-white hover:bg-slate-800/60'
-          }`}
-        >
-          Contractors (1099 & C2C) ({contractors.length})
-        </button>
-      </div>
 
       {/* Filter Bar */}
       <FilterBar
@@ -503,7 +309,7 @@ export const EmployeesContractorsView = () => {
           {
             key: 'status',
             label: 'Status',
-            options: ['All', 'Active', 'Inactive', 'On Leave', 'Completed'],
+            options: ['All', 'Active', 'Inactive', 'On Leave'],
             value: statusFilter,
             onChange: setStatusFilter,
           },
@@ -517,11 +323,11 @@ export const EmployeesContractorsView = () => {
       {/* Main Data Table */}
       <div className="rounded-2xl border border-white/5 overflow-hidden">
         <DataTable
-          columns={activeTab === 'employees' ? employeeColumns : contractorColumns}
+          columns={employeeColumns}
           data={pagedList}
           onRowClick={(row) => setInspectItem(row)}
-          emptyTitle={`No ${activeTab} found`}
-          emptyDescription="Adjust your search query or status filter to see candidate records."
+          emptyTitle="No employees found"
+          emptyDescription="Adjust your search query or status filter to see employee records."
         />
         <Pagination
           currentPage={currentPage}
@@ -539,7 +345,7 @@ export const EmployeesContractorsView = () => {
       <Modal
         isOpen={Boolean(inspectItem)}
         onClose={() => setInspectItem(null)}
-        title={inspectItem ? (inspectItem.companyName || `${inspectItem.firstName} ${inspectItem.lastName}`) : 'Details'}
+        title={inspectItem ? `${inspectItem.firstName} ${inspectItem.lastName}` : 'Details'}
         subtitle={`System ID: ${inspectItem?.id} • Organization: ${inspectItem?.organizationId || selectedOrgId}`}
         footer={
           <button
@@ -559,8 +365,8 @@ export const EmployeesContractorsView = () => {
                 <Badge status={inspectItem.status} />
               </div>
               <div>
-                <span className="text-slate-400 block">Rate</span>
-                <CurrencyDisplay value={inspectItem.payRate || inspectItem.hourlyRate} />/hr
+                <span className="text-slate-400 block">Pay Rate</span>
+                <CurrencyDisplay value={inspectItem.payRate} />/hr
               </div>
               <div>
                 <span className="text-slate-400 block">Email Address</span>
@@ -582,10 +388,10 @@ export const EmployeesContractorsView = () => {
                   <span className="text-white font-medium">{inspectItem.department}</span>
                 </div>
               )}
-              {inspectItem.specialty && (
+              {inspectItem.employmentType && (
                 <div>
-                  <span className="text-slate-400 block">Specialty Area</span>
-                  <span className="text-white font-medium">{inspectItem.specialty}</span>
+                  <span className="text-slate-400 block">Employment Type</span>
+                  <span className="text-white font-medium">{inspectItem.employmentType}</span>
                 </div>
               )}
               {inspectItem.hireDate && (
@@ -616,12 +422,10 @@ export const EmployeesContractorsView = () => {
         }}
         title={
           editTarget
-            ? `Edit ${activeTab === 'employees' ? 'Employee' : 'Contractor'}: ${
-                editTarget.companyName || `${editTarget.firstName} ${editTarget.lastName}`
-              }`
-            : `Add New ${activeTab === 'employees' ? 'Employee' : 'Contractor'}`
+            ? `Edit Employee: ${editTarget.firstName} ${editTarget.lastName}`
+            : 'Add New Employee'
         }
-        subtitle="Validate required parameters, unique identifier, email format, and positive rates."
+        subtitle="Validate required parameters, unique identifier, email format, and positive pay rate."
         footer={
           <>
             <button
@@ -649,115 +453,67 @@ export const EmployeesContractorsView = () => {
             <TextInput
               value={formId}
               onChange={setFormId}
-              placeholder={activeTab === 'employees' ? 'EMP-1005' : 'CON-2004'}
+              placeholder="EMP-1005"
               disabled={Boolean(editTarget)}
             />
           </FormField>
 
-          {activeTab === 'employees' ? (
-            <>
-              <div className="grid grid-cols-2 gap-3">
-                <FormField label="First Name" required error={formErrors.firstName}>
-                  <TextInput
-                    value={formFirstName}
-                    onChange={setFormFirstName}
-                    placeholder="Jane"
-                  />
-                </FormField>
-                <FormField label="Last Name" required error={formErrors.lastName}>
-                  <TextInput
-                    value={formLastName}
-                    onChange={setFormLastName}
-                    placeholder="Doe"
-                  />
-                </FormField>
-              </div>
+          <div className="grid grid-cols-2 gap-3">
+            <FormField label="First Name" required error={formErrors.firstName}>
+              <TextInput
+                value={formFirstName}
+                onChange={setFormFirstName}
+                placeholder="Jane"
+              />
+            </FormField>
+            <FormField label="Last Name" required error={formErrors.lastName}>
+              <TextInput
+                value={formLastName}
+                onChange={setFormLastName}
+                placeholder="Doe"
+              />
+            </FormField>
+          </div>
 
-              <div className="grid grid-cols-2 gap-3">
-                <FormField label="Job Title / Role" required error={formErrors.role}>
-                  <TextInput
-                    value={formRole}
-                    onChange={setFormRole}
-                    placeholder="Senior Full-Stack Engineer"
-                  />
-                </FormField>
-                <FormField label="Department">
-                  <SelectInput
-                    value={formDepartment}
-                    onChange={setFormDepartment}
-                    options={[
-                      'Engineering & Architecture',
-                      'Product Engineering',
-                      'Infrastructure',
-                      'Quality Assurance',
-                      'Executive Management',
-                    ]}
-                  />
-                </FormField>
-              </div>
+          <div className="grid grid-cols-2 gap-3">
+            <FormField label="Job Title / Role" required error={formErrors.role}>
+              <TextInput
+                value={formRole}
+                onChange={setFormRole}
+                placeholder="Senior Full-Stack Engineer"
+              />
+            </FormField>
+            <FormField label="Department">
+              <SelectInput
+                value={formDepartment}
+                onChange={setFormDepartment}
+                options={[
+                  'Engineering & Architecture',
+                  'Product Engineering',
+                  'Infrastructure',
+                  'Quality Assurance',
+                  'Executive Management',
+                ]}
+              />
+            </FormField>
+          </div>
 
-              <div className="grid grid-cols-2 gap-3">
-                <FormField label="Employment Type">
-                  <SelectInput
-                    value={formEmploymentType}
-                    onChange={setFormEmploymentType}
-                    options={['Full-Time (W2)', 'Part-Time (W2)', 'Hourly (W2)']}
-                  />
-                </FormField>
-                <FormField label="Hire Date" required error={formErrors.hireDate}>
-                  <TextInput
-                    type="date"
-                    value={formHireDate}
-                    onChange={setFormHireDate}
-                  />
-                </FormField>
-              </div>
-            </>
-          ) : (
-            <>
-              <FormField label="Company / Entity Name" required error={formErrors.companyName}>
-                <TextInput
-                  value={formCompanyName}
-                  onChange={setFormCompanyName}
-                  placeholder="Apex Cloud Consulting LLC"
-                />
-              </FormField>
-
-              <div className="grid grid-cols-2 gap-3">
-                <FormField label="Contact Person" required error={formErrors.contactPerson}>
-                  <TextInput
-                    value={formContactPerson}
-                    onChange={setFormContactPerson}
-                    placeholder="Rajesh Sharma"
-                  />
-                </FormField>
-                <FormField label="Contract Type">
-                  <SelectInput
-                    value={formContractType}
-                    onChange={setFormContractType}
-                    options={['1099 Independent', 'Corp-to-Corp (C2C)', 'Subcontractor']}
-                  />
-                </FormField>
-              </div>
-
-              <div className="grid grid-cols-2 gap-3">
-                <FormField label="Specialty Area" required error={formErrors.specialty}>
-                  <TextInput
-                    value={formSpecialty}
-                    onChange={setFormSpecialty}
-                    placeholder="e.g. Data Engineering"
-                  />
-                </FormField>
-                <FormField label="Payment Terms">
-                  <SelectInput
-                    value={formPaymentTerms}
-                    onChange={setFormPaymentTerms}
-                    options={['Net 15', 'Net 30', 'Net 45', 'Due on Receipt']}
-                  />
-                </FormField>
-              </div>
-            </>
-          )}
+          <div className="grid grid-cols-2 gap-3">
+            <FormField label="Employment Type">
+              <SelectInput
+                value={formEmploymentType}
+                onChange={setFormEmploymentType}
+                options={['Full-Time (W2)', 'Part-Time (W2)', 'Hourly (W2)']}
+              />
+            </FormField>
+            <FormField label="Hire Date" required error={formErrors.hireDate}>
+              <TextInput
+                type="date"
+                value={formHireDate}
+                onChange={setFormHireDate}
+              />
+            </FormField>
+          </div>
 
           <div className="grid grid-cols-2 gap-3">
             <FormField label="Primary Email" required error={formErrors.email}>
@@ -778,7 +534,7 @@ export const EmployeesContractorsView = () => {
           </div>
 
           <FormField
-            label={activeTab === 'employees' ? 'Pay Rate (USD/hr)' : 'Hourly Billable Rate (USD/hr)'}
+            label="Pay Rate (USD/hr)"
             required
             error={formErrors.rate}
           >
@@ -798,15 +554,13 @@ export const EmployeesContractorsView = () => {
         isOpen={Boolean(statusTarget)}
         title={
           statusTarget?.status === 'Active'
-            ? `Deactivate ${activeTab === 'employees' ? 'Employee' : 'Contractor'}?`
-            : `Reactivate ${activeTab === 'employees' ? 'Employee' : 'Contractor'}?`
+            ? 'Deactivate Employee?'
+            : 'Reactivate Employee?'
         }
         message={
           statusTarget?.status === 'Active'
-            ? `Are you sure you want to deactivate ${
-                statusTarget?.companyName || `${statusTarget?.firstName} ${statusTarget?.lastName}`
-              }? Deactivation preserves all historical timesheets, rate logs, and placement records while preventing new assignments.`
-            : `Reactivating will restore active status and make this candidate available for new client job placements.`
+            ? `Are you sure you want to deactivate ${statusTarget?.firstName} ${statusTarget?.lastName}? Deactivation preserves all historical timesheets, rate logs, and placement records while preventing new assignments.`
+            : `Reactivating will restore active status and make this employee available for client job placements.`
         }
         confirmLabel={statusTarget?.status === 'Active' ? 'Deactivate' : 'Reactivate'}
         variant={statusTarget?.status === 'Active' ? 'warning' : 'primary'}
@@ -816,3 +570,5 @@ export const EmployeesContractorsView = () => {
     </div>
   );
 };
+
+export const EmployeesContractorsView = EmployeesView;

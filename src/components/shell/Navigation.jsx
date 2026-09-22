@@ -28,39 +28,32 @@ export const NAV_GROUPS = [
     label: 'Workforce & CRM',
     items: [
       {
-        id: 'employees-contractors',
-        label: 'Employees & Contractors',
+        id: 'employees',
+        label: 'Employees',
         icon: 'users',
         badge: 'Roster',
-        description: 'Manage internal W2 employees and 1099/C2C contractors',
+        description: 'Manage internal W2 employee roster, compensation, and profiles',
       },
       {
-        id: 'clients',
-        label: 'Clients',
-        icon: 'clients',
-        badge: null,
-        description: 'Customer accounts, billing terms, and credit parameters',
-      },
-      {
-        id: 'vendors',
-        label: 'Vendors',
-        icon: 'building',
+        id: 'candidates',
+        label: 'Candidates',
+        icon: 'candidates',
         badge: 'CRM',
-        description: 'Subcontracting firms, agencies, and supplier partners',
+        description: 'Customer client accounts and vendor partner registry',
       },
       {
-        id: 'jobs',
-        label: 'Jobs',
-        icon: 'jobs',
+        id: 'assignments',
+        label: 'Assignments',
+        icon: 'assignments',
         badge: 'Open',
-        description: 'Client job orders, open requisitions, and bill rate targets',
+        description: 'Client assignments, open requisitions, and bill rate targets',
       },
       {
         id: 'placements',
         label: 'Placements',
         icon: 'placements',
         badge: 'Active',
-        description: 'Consultant job assignments, pay/bill margins, and schedules',
+        description: 'Consultant client placements, pay/bill margins, and schedules',
       },
     ],
   },
@@ -94,6 +87,13 @@ export const NAV_GROUPS = [
         icon: 'income',
         badge: null,
         description: 'Recognized billing revenue, gross profit, and margins',
+      },
+      {
+        id: 'invoices',
+        label: 'Invoices',
+        icon: 'invoices',
+        badge: 'Billing',
+        description: 'Customer invoices, billing generation from recognized income, and payment tracking',
       },
       {
         id: 'ar',
@@ -141,8 +141,16 @@ export const NAV_GROUPS = [
 ];
 
 export const getNavItemById = (id) => {
+  const normalizedId =
+    id === 'employees-contractors'
+      ? 'employees'
+      : id === 'clients' || id === 'vendors'
+      ? 'candidates'
+      : id === 'jobs'
+      ? 'assignments'
+      : id;
   for (const group of NAV_GROUPS) {
-    const found = group.items.find((item) => item.id === id);
+    const found = group.items.find((item) => item.id === normalizedId);
     if (found) return { ...found, group: group.label };
   }
   return {

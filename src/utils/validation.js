@@ -331,4 +331,22 @@ export const CSV_IMPORT_SCHEMAS = {
     ],
     templateCSV: 'candidateId,clientId,jobId,startDate,endDate,billRate,payRate\nEMP-1001,CLI-3001,JOB-4001,2026-10-01,2027-03-31,150.00,85.00',
   },
+  Candidates: {
+    expectedHeaders: ['id', 'candidateType', 'name', 'contactPerson', 'email', 'phone', 'paymentTerms'],
+    fieldSchema: [
+      { field: 'id', required: true, type: 'string' },
+      {
+        field: 'candidateType',
+        required: true,
+        type: 'string',
+        validate: (v) => (['Client', 'Vendor'].includes(v) ? null : 'Candidate Type must be Client or Vendor.'),
+      },
+      { field: 'name', required: true, type: 'string' },
+      { field: 'contactPerson', required: true, type: 'string' },
+      { field: 'email', required: true, type: 'email' },
+      { field: 'phone', required: false, type: 'string' },
+      { field: 'paymentTerms', required: false, type: 'string' },
+    ],
+    templateCSV: 'id,candidateType,name,contactPerson,email,phone,paymentTerms\nCLI-3004,Client,Acme Global Systems,Rachel Zane,rzane@acmeglobal.com,+1-555-0144,Net 30\nVEN-3004,Vendor,Apex Solutions Partner,Harvey Specter,harvey@apexpartner.com,+1-555-0188,Net 15',
+  },
 };

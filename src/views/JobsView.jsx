@@ -5,7 +5,7 @@ import { DataTable } from '../components/common/DataTable';
 import { FilterBar } from '../components/common/FilterBar';
 import { Pagination } from '../components/common/Pagination';
 import { Badge } from '../components/common/Badge';
-import { CurrencyDisplay, DateDisplay } from '../components/common/Formatters';
+import { CurrencyDisplay } from '../components/common/Formatters';
 import { Modal, ConfirmDialog } from '../components/common/Modal';
 import { FormField, TextInput, SelectInput } from '../components/common/FormField';
 import { Icon } from '../components/common/Icons';
@@ -22,11 +22,11 @@ import {
 } from '../utils/validation';
 
 /**
- * JobsView Component
+ * AssignmentsView Component
  * 
- * @purpose Job orders and requisitions management module with client relationship binding, CRUD, and deactivation workflows.
+ * @purpose Client assignments and requisitions management module with client relationship binding, CRUD, and deactivation workflows.
  */
-export const JobsView = () => {
+export const AssignmentsView = () => {
   const dispatch = useDispatch();
   const { jobs, clients, selectedOrgId } = useSelector((state) => state.data);
 
@@ -100,7 +100,7 @@ export const JobsView = () => {
     const idErr = validateUniqueId(formId, jobs, isEdit ? editTarget.id : null);
     if (idErr) errors.id = idErr;
 
-    const titleErr = validateRequired(formTitle, 'Job Title');
+    const titleErr = validateRequired(formTitle, 'Assignment Title');
     if (titleErr) errors.title = titleErr;
 
     const clientErr = validateRequired(formClientId, 'Client Association');
@@ -139,7 +139,7 @@ export const JobsView = () => {
 
     dispatch(
       addToast({
-        title: 'Job Order Created',
+        title: 'Assignment Created',
         message: `${formTitle} for ${selectedClient?.name} created under ${formId}.`,
         type: 'success',
       })
@@ -170,7 +170,7 @@ export const JobsView = () => {
 
     dispatch(
       addToast({
-        title: 'Job Order Updated',
+        title: 'Assignment Updated',
         message: `Changes saved for ${formTitle}.`,
         type: 'success',
       })
@@ -184,7 +184,7 @@ export const JobsView = () => {
     const newStatus = statusTarget.status === 'Active' ? 'Inactive' : 'Active';
     dispatch(
       addToast({
-        title: `Job ${newStatus === 'Active' ? 'Activated' : 'Deactivated'}`,
+        title: `Assignment ${newStatus === 'Active' ? 'Activated' : 'Deactivated'}`,
         message: `${statusTarget.title} marked as ${newStatus}.`,
         type: newStatus === 'Active' ? 'success' : 'warning',
       })
@@ -195,7 +195,7 @@ export const JobsView = () => {
   const columns = [
     { header: 'ID', accessor: 'id', sortable: true },
     {
-      header: 'Job Title & Client',
+      header: 'Assignment & Client',
       sortable: true,
       render: (row) => (
         <div>
@@ -277,9 +277,9 @@ export const JobsView = () => {
   return (
     <div className="space-y-6">
       <PageHeader
-        title="Job Requisitions"
-        subtitle="Manage client job orders, open requisitions, bill rate targets, position fill progress, and candidate pipeline matches."
-        badge={`${filteredJobs.length} Requisitions`}
+        title="Assignments"
+        subtitle="Manage client assignments, open requisitions, bill rate targets, position fill progress, and candidate pipeline matches."
+        badge={`${filteredJobs.length} Assignments`}
         actions={
           <button
             type="button"
@@ -287,7 +287,7 @@ export const JobsView = () => {
             className="inline-flex items-center gap-1.5 px-3.5 py-2 bg-indigo-600 hover:bg-indigo-500 text-white text-xs font-semibold rounded-xl shadow-lg shadow-indigo-600/20 transition-all"
           >
             <Icon name="plus" className="w-4 h-4" />
-            Create Job Order
+            Create Assignment
           </button>
         }
       />
@@ -391,8 +391,8 @@ export const JobsView = () => {
           setShowAddModal(false);
           setEditTarget(null);
         }}
-        title={editTarget ? `Edit Job Order: ${editTarget.title}` : 'Create New Job Order'}
-        subtitle="Select client account, define rate targets, and configure requisition headcount."
+        title={editTarget ? `Edit Assignment: ${editTarget.title}` : 'Create New Assignment'}
+        subtitle="Select client account, define rate targets, and configure assignment headcount."
         footer={
           <>
             <button
@@ -410,14 +410,14 @@ export const JobsView = () => {
               onClick={editTarget ? handleSaveEdit : handleSaveAdd}
               className="px-4 py-2 bg-indigo-600 hover:bg-indigo-500 text-white text-xs font-semibold rounded-xl shadow-md"
             >
-              {editTarget ? 'Save Changes' : 'Post Job Order'}
+              {editTarget ? 'Save Changes' : 'Post Assignment'}
             </button>
           </>
         }
       >
         <div className="space-y-3">
           <div className="grid grid-cols-2 gap-3">
-            <FormField label="Job ID" required error={formErrors.id}>
+            <FormField label="Assignment ID" required error={formErrors.id}>
               <TextInput
                 value={formId}
                 onChange={setFormId}
@@ -435,7 +435,7 @@ export const JobsView = () => {
             </FormField>
           </div>
 
-          <FormField label="Job Title" required error={formErrors.title}>
+          <FormField label="Assignment Title" required error={formErrors.title}>
             <TextInput
               value={formTitle}
               onChange={setFormTitle}
@@ -514,13 +514,13 @@ export const JobsView = () => {
       {/* Confirmation Dialog for Deactivation */}
       <ConfirmDialog
         isOpen={Boolean(statusTarget)}
-        title={statusTarget?.status === 'Active' ? 'Deactivate Job Order?' : 'Reactivate Job Order?'}
+        title={statusTarget?.status === 'Active' ? 'Deactivate Assignment?' : 'Reactivate Assignment?'}
         message={
           statusTarget?.status === 'Active'
-            ? `Are you sure you want to deactivate requisition "${statusTarget?.title}"? Existing placements will remain active, but the requisition will be marked closed to new applicants.`
-            : `Reactivating "${statusTarget?.title}" will reopen this requisition for consultant matching.`
+            ? `Are you sure you want to deactivate assignment "${statusTarget?.title}"? Existing placements will remain active, but the assignment will be marked closed to new applicants.`
+            : `Reactivating "${statusTarget?.title}" will reopen this assignment for consultant matching.`
         }
-        confirmLabel={statusTarget?.status === 'Active' ? 'Deactivate Job' : 'Reactivate Job'}
+        confirmLabel={statusTarget?.status === 'Active' ? 'Deactivate Assignment' : 'Reactivate Assignment'}
         variant={statusTarget?.status === 'Active' ? 'warning' : 'primary'}
         onConfirm={handleConfirmToggleStatus}
         onCancel={() => setStatusTarget(null)}
@@ -528,3 +528,6 @@ export const JobsView = () => {
     </div>
   );
 };
+
+export const JobsView = AssignmentsView;
+export default AssignmentsView;

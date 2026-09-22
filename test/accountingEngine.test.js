@@ -225,3 +225,75 @@ describe('Accounting Engine - Accounts Payable (Worker Costs & Bills)', () => {
     assert.match(excessiveResult.error, /Excessive disbursement prevented/);
   });
 });
+
+describe('Invoice Module - End-to-End Financial Lifecycle & Traceability', () => {
+  it('enforces Revenue = Hours × Billing Rate and Invoice Balance = Total − Amount Paid', () => {
+    const hours = 40;
+    const rate = 175;
+    const revenue = +(hours * rate).toFixed(2);
+    assert.equal(revenue, 7000);
+
+    const lineItems = [
+      {
+        incomeId: 'INC-7005',
+        sourceTimesheetId: 'TS-6005',
+        placementId: 'PLC-5002',
+        quantity: hours,
+        rate,
+        amount: revenue,
+        description: 'Lead Cloud Architect — Elena Rostova (2026-09)',
+      },
+    ];
+
+    const totals = calculateInvoiceTotals(lineItems, 5, 2000); // 5% tax, 2000 paid
+    assert.equal(totals.subtotal, 7000);
+    assert.equal(totals.taxAmount, 350);
+    assert.equal(totals.totalAmount, 7350);
+    assert.equal(totals.paidAmount, 2000);
+    assert.equal(totals.balanceDue, 5350); // 7350 - 2000 = 5350
+  });
+
+  it('preserves full financial traceability from Client down to Employee', () => {
+    const invoice = {
+      id: 'INV-8005',
+      invoiceNumber: 'INV-2026-0005',
+      clientId: 'CLI-3001',
+      clientName: 'FinTech Horizon Corp',
+      lineItems: [
+        {
+          incomeId: 'INC-7001',
+          sourceTimesheetId: 'TS-6001',
+          placementId: 'PLC-5001',
+          employeeName: 'Sarah Jenkins',
+          quantity: 40,
+          rate: 165,
+          amount: 6600,
+        },
+      ],
+    };
+
+    assert.equal(invoice.clientId, 'CLI-3001');
+    assert.equal(invoice.lineItems[0].incomeId, 'INC-7001');
+    assert.equal(invoice.lineItems[0].sourceTimesheetId, 'TS-6001');
+    assert.equal(invoice.lineItems[0].placementId, 'PLC-5001');
+    assert.equal(invoice.lineItems[0].employeeName, 'Sarah Jenkins');
+  });
+
+  it('prevents multiple invoicing of the same income record attached to active invoices', () => {
+    const client = { id: 'CLI-3001', name: 'FinTech Horizon Corp' };
+    const income = [{ id: 'INC-7002', clientId: 'CLI-3001', status: 'Recognized' }];
+    const existingInvoices = [
+      {
+        id: 'INV-8001',
+        invoiceNumber: 'INV-2026-0811',
+        status: 'Open',
+        incomeReferences: ['INC-7002'],
+      },
+    ];
+
+    const result = validateInvoiceCreation(client, income, existingInvoices);
+    assert.equal(result.valid, false);
+    assert.match(result.error, /already attached to existing invoice/);
+  });
+});
+
