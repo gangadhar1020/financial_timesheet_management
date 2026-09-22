@@ -59,7 +59,11 @@ export const MobileNav = () => {
                 {group.label}
               </h4>
               {group.items.map((item) => {
-                const isActive = activeView === item.id;
+                const isActive =
+                  activeView === item.id ||
+                  (item.id === 'employees' && activeView === 'employees-contractors') ||
+                  (item.id === 'candidates' && (activeView === 'clients' || activeView === 'vendors')) ||
+                  (item.id === 'assignments' && activeView === 'jobs');
                 return (
                   <button
                     key={item.id}

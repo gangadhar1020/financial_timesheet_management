@@ -401,6 +401,15 @@ export const IncomeRevenueView = () => {
         badge="Financials"
         actions={
           <div className="flex items-center gap-2">
+            <button
+              type="button"
+              onClick={() => dispatch(setActiveView('invoices'))}
+              className="px-3 py-2 text-xs font-semibold text-slate-300 hover:text-white bg-slate-800/80 hover:bg-slate-700 rounded-xl border border-white/5 transition-all flex items-center gap-1.5"
+              title="Go to Invoices module"
+            >
+              <Icon name="invoices" className="w-4 h-4 text-indigo-400" />
+              <span>Client Invoices</span>
+            </button>
             {ungeneratedApprovedTimesheets.length > 0 && (
               <button
                 type="button"

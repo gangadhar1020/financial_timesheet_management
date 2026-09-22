@@ -138,7 +138,7 @@ export const PlacementsView = () => {
     const clientErr = validateRequired(formClientId, 'Client Selection');
     if (clientErr) errors.clientId = clientErr;
 
-    const jobErr = validateRequired(formJobId, 'Job Order Selection');
+    const jobErr = validateRequired(formJobId, 'Assignment Selection');
     if (jobErr) errors.jobId = jobErr;
 
     const billErr = validatePositiveRate(formBillRate, 'Bill Rate');
@@ -373,7 +373,7 @@ export const PlacementsView = () => {
     <div className="space-y-6">
       <PageHeader
         title="Consultant Placements"
-        subtitle="Connect employees & contractors to client job orders, monitor bill/pay rates, automatically calculate margins, and enforce contract schedules."
+        subtitle="Connect employees to client assignments, monitor bill/pay rates, automatically calculate margins, and enforce contract schedules."
         badge={`${filteredPlacements.length} Active Placements`}
         actions={
           <button
@@ -493,7 +493,7 @@ export const PlacementsView = () => {
           setEditTarget(null);
         }}
         title={editTarget ? `Edit Placement: ${editTarget.candidateName}` : 'Create New Consultant Placement'}
-        subtitle="Connect existing candidate, client, and job requisition. End date cannot precede start date."
+        subtitle="Connect existing candidate, client, and assignment requisition. End date cannot precede start date."
         footer={
           <>
             <button
@@ -540,13 +540,14 @@ export const PlacementsView = () => {
                   setFormCandidateType(val);
                   setFormCandidateId(val === 'Employee' ? employees[0]?.id : contractors[0]?.id);
                 }}
-                options={['Employee', 'Contractor']}
+                disabled={Boolean(editTarget) || true}
+                options={editTarget?.candidateType === 'Contractor' ? ['Contractor', 'Employee'] : ['Employee']}
               />
             </FormField>
           </div>
 
           {/* Relationship 1: Candidate */}
-          <FormField label="Candidate (Employee / Contractor Reference)" required error={formErrors.candidateId}>
+          <FormField label="Candidate (Employee Reference)" required error={formErrors.candidateId}>
             <SelectInput
               value={formCandidateId}
               onChange={setFormCandidateId}
@@ -563,12 +564,12 @@ export const PlacementsView = () => {
             />
           </FormField>
 
-          {/* Relationship 3: Job */}
-          <FormField label="Job Order Requisition Reference" required error={formErrors.jobId}>
+          {/* Relationship 3: Assignment */}
+          <FormField label="Assignment Requisition Reference" required error={formErrors.jobId}>
             <SelectInput
               value={formJobId}
               onChange={setFormJobId}
-              options={jobOptions.length > 0 ? jobOptions : [{ value: '', label: 'No open jobs for this client' }]}
+              options={jobOptions.length > 0 ? jobOptions : [{ value: '', label: 'No open assignments for this client' }]}
             />
           </FormField>
 

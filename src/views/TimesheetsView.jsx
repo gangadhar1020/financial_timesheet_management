@@ -46,8 +46,6 @@ export const TimesheetsView = () => {
   const dispatch = useDispatch();
   const timesheets = useSelector((state) => state.data.timesheets);
   const placements = useSelector((state) => state.data.placements);
-  const employees = useSelector((state) => state.data.employees);
-  const contractors = useSelector((state) => state.data.contractors);
   const income = useSelector((state) => state.data.income);
 
   // ─── Filter & Pagination State ──────────────────────────────
@@ -359,8 +357,6 @@ export const TimesheetsView = () => {
           isOpen={true}
           editData={editTarget}
           placements={placements}
-          employees={employees}
-          contractors={contractors}
           existingTimesheets={timesheets}
           onSave={(data) => {
             if (editTarget) {
@@ -485,7 +481,7 @@ const generateDatesFromPeriodEnding = (periodEnding) => {
   return entries;
 };
 
-const TimesheetFormModal = ({ isOpen, editData, placements, employees, contractors, existingTimesheets, onSave, onClose }) => {
+const TimesheetFormModal = ({ isOpen, editData, placements, existingTimesheets, onSave, onClose }) => {
   const isEdit = Boolean(editData);
 
   const [form, setForm] = useState(() => {
